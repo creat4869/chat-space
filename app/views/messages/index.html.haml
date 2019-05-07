@@ -1,0 +1,44 @@
+.flash-box
+  .notice
+    test
+
+.wrapper
+  .chat-side
+    .side-header
+      %p.side-header__user-name
+        test
+      %ul.user-menu
+        %li.user-menu__edit-user
+          = link_to '' do
+            %i.fa.fa-edit
+        %li.user-menu__new-group
+          = link_to '' do
+            %i.fa.fa-cog
+    
+    .groups
+      = render partial: 'group'
+
+  .chat-main
+    .main-header
+      .current-group
+        %h2.current-group__name
+          test1
+        %ul.member-list
+          Member :
+          %li.member-list__member
+            test
+      = link_to '' do
+        .main-header__edit-btn
+          Edit
+
+    .messages
+      = render partial: 'chat'
+
+    .form
+      %form.new-message
+        .input-box
+          %input{type: 'text', class: 'input-box__text', placeholder: "type a message"}
+          %label.image-label
+            %i.fa.fa-image
+            %input{type: 'file', class: 'image-label__input'}
+        %input{type: 'submit', class: 'new-message__submit-btn', value: "Send" }
