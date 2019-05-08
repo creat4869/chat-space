@@ -1,29 +1,16 @@
 .wrapper
-  .chat-side
-    .side-header
-      %p.side-header__user-name
-        = current_user.name
-      %ul.user-menu
-        %li.user-menu__edit-user
-          = link_to new_group_path do
-            %i.fa.fa-edit
-        %li.user-menu__new-group
-          = link_to edit_user_path(current_user) do
-            %i.fa.fa-cog
-    
-    .groups
-      = render partial: 'group'
+  = render partial: 'groups/sidebar' 
 
   .chat-main
     .main-header
       .current-group
         %h2.current-group__name
-          test1
+          = @group.group_name
         %ul.member-list
           Member :
           %li.member-list__member
-            test
-      = link_to '' do
+            = @user.pluck(:name).join(",")
+      = link_to edit_group_path(@group) do
         .main-header__edit-btn
           Edit
 
