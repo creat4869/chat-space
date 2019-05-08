@@ -1,7 +1,8 @@
-= link_to '' do
-  .group
-    %p.group__group-name
-      test
-    %p.group__latest-message
-      test
-      
+.group
+  - current_user.groups.each do |group|
+    = link_to group_messages_path(group) do
+      %p.group__group-name
+        = group.group_name
+      %p.group__latest-message
+        メッセージはまだありません。
+          
