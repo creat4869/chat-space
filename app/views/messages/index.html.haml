@@ -15,7 +15,8 @@
           Edit
 
     .messages
-      = render partial: 'chat'
+      - @messages.each do |message|
+        = render partial: 'chat', locals: {message:message}
 
     .form
       = form_for [@group, @message], html: {class: 'new-message'} do |f|
