@@ -18,10 +18,10 @@
       = render partial: 'chat'
 
     .form
-      %form.new-message
+      = form_for [@group, @message], html: {class: 'new-message'} do |f|
         .input-box
-          %input{type: 'text', class: 'input-box__text', placeholder: "type a message"}
-          %label.image-label
+          = f.text_field :body, class: 'input-box__text', placeholder: "type a message"
+          = f.label :image, class: 'image-label' do
             %i.fa.fa-image
-            %input{type: 'file', class: 'image-label__input'}
-        %input{type: 'submit', class: 'new-message__submit-btn', value: "Send" }
+            = f.file_field :image, class: 'image-label__input'
+        = f.submit 'SEND', class: 'new-message__submit-btn'
