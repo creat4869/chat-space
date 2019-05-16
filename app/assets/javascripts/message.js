@@ -38,8 +38,7 @@ $(function(){
     .done(function(data){
       var html = buildHTML(data);
       $('.messages').append(html);
-      $('.input-box__text').val('');
-      $('.image-label__input').val('');
+      $('.new-message')[0].reset();
       $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight}, "first");
     })
     .fail(function(){
