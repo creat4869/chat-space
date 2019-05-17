@@ -26,10 +26,18 @@
 
     .chat-group-form__field--right
       #chat-group-users
-        #chat-group-user-22.chat-group-user.clearfix
-          %input{name: 'chat_group[user_ids][]', type: 'hidden', value: '22'}
+        .chat-group-user.clearfix.js-chat-member{id: "chat-group-user-#{current_user.id}"}
+          %input{name: 'group[user_ids][]', type: 'hidden', value: "#{current_user.id}"}
           %p.chat-group-user__name
-            seo_kyohei
+            = current_user.name
+        - if @group.users.length > 1
+          - @users.each do |user|
+            .chat-group-user.clearfix.js-chat-member{id: "chat-group-user-#{user.id}"}
+              %input{name: 'group[user_ids][]', type: 'hidden', value: "#{user.id}"}
+              %p.chat-group-user__name
+                = user.name
+              .user-search-remove.chat-group-user__btn.chat-group-user__btn--remove.js-remove-btn
+                = "削除"
 
   .chat-group-form__field.clearfix
     .chat-group-form__field--left
