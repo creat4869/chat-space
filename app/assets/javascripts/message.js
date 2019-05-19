@@ -43,4 +43,56 @@ $(function(){
       alert('非同期通信に失敗しました');
     })
   });
+
+  var buildMessageHTML = function(message){
+    var MessageBody = (message.body) ? `<p class="message__text">${ message.body }</p>`: "";
+    var MessageImage = (message.image) ? `<img src="${ message.image }">`: "";
+
+    var html = `<div class="message" data-message-id="${message.id}">
+                  <div class="upper-info">
+                    <p class="upper-info__user">
+                      ${message.user_name}
+                    </p>
+                    <p class="upper-info__date">
+                      ${message.created_at}
+                    </p>
+                  </div>
+                  ${MessageBody}
+                  ${MessageImage}
+                </div>`
+    return html;
+  };
+
+  var reloadMessages = function(){
+    var last_message_id = $('.message:last').data('message-id');
+
+    var dirPathname = location.pathname.split("/");
+    var currentGroupname = dirPathname[2]
+
+    $.ajax({
+      url: `/groups/${currentGroupname}/api/messages`,
+      type: 'GET',
+      dataType: 'json',
+      data: {id: last_message_id}
+    })
+    .done(function(messages){
+      var insertHTML = '';
+      messages.forEach(function(message){
+        if (message.id > last_message_id){
+          insertHTML += buildMessageHTML(message);
+          $('.messages').append(insertHTML);
+          $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight}, "first");
+        }
+      });
+    })
+    .fail(function(){
+      alert('自動更新に失敗しました');
+    })
+  };
+
+  $(function(){
+    if (window.location.href.match(/\/groups\/\d+\/messages/)){
+      setInterval(reloadMessages, 5000);
+    }
+  });
 });
