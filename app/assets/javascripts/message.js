@@ -45,48 +45,21 @@ $(function(){
   });
 
   var buildMessageHTML = function(message){
-    if (message.body && message.image) {
-      var html = `<div class="message" data-message-id="${message.id}">
-                    <div class="upper-info">
-                      <p class="upper-info__user">
-                        ${message.user_name}
-                      </p>
-                      <p class="upper-info__date">
-                        ${message.created_at}
-                      </p>
-                    </div>
-                    <p class="message__text">
-                      ${message.body}
+    var MessageBody = (message.body) ? `<p class="message__text">${ message.body }</p>`: "";
+    var MessageImage = (message.image) ? `<img src="${ message.image }">`: "";
+
+    var html = `<div class="message" data-message-id="${message.id}">
+                  <div class="upper-info">
+                    <p class="upper-info__user">
+                      ${message.user_name}
                     </p>
-                    <img src="${message.image}">
-                  </div>`
-    }else if (message.body) {
-      var html = `<div class="message" data-message-id="${message.id}">
-                    <div class="upper-info">
-                      <p class="upper-info__user">
-                        ${message.user_name}
-                      </p>
-                      <p class="upper-info__date">
-                        ${message.created_at}
-                      </p>
-                    </div>
-                    <p class="message__text">
-                      ${message.body}
+                    <p class="upper-info__date">
+                      ${message.created_at}
                     </p>
-                  </div>`
-    }else if (message.image) {
-      var html = `<div class="message" data-message-id="${message.id}">
-                    <div class="upper-info">
-                      <p class="upper-info__user">
-                        ${message.user_name}
-                      </p>
-                      <p class="upper-info__date">
-                        ${message.created_at}
-                      </p>
-                    </div>
-                    <img src="${message.image}">
-                  </div>`
-    };
+                  </div>
+                  ${MessageBody}
+                  ${MessageImage}
+                </div>`
     return html;
   };
 
