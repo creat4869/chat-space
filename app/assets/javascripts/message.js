@@ -1,3 +1,4 @@
+$(document).on('turbolinks:load', function(){
 $(function(){
   function buildHTML(message){
     var MessageImage = (message.image) ? `<img src="${ message.image }">`: "";
@@ -63,36 +64,39 @@ $(function(){
     return html;
   };
 
-  var reloadMessages = function(){
-    var last_message_id = $('.message:last').data('message-id');
+  function reloadMessages(){
+    if (window.location.href.match(/\/groups\/\d+\/messages/)){
+      var last_message_id = $('.message:last').data('message-id');
 
-    var dirPathname = location.pathname.split("/");
-    var currentGroupname = dirPathname[2]
+      var dirPathname = location.pathname.split("/");
+      var currentGroupname = dirPathname[2]
 
-    $.ajax({
-      url: `/groups/${currentGroupname}/api/messages`,
-      type: 'GET',
-      dataType: 'json',
-      data: {id: last_message_id}
-    })
-    .done(function(messages){
-      var insertHTML = '';
-      messages.forEach(function(message){
-        if (message.id > last_message_id){
-          insertHTML += buildMessageHTML(message);
-          $('.messages').append(insertHTML);
-          $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight}, "first");
-        }
-      });
-    })
-    .fail(function(){
-      alert('自動更新に失敗しました');
-    })
+      $.ajax({
+        url: `/groups/${currentGroupname}/api/messages`,
+        type: 'GET',
+        dataType: 'json',
+        data: {id: last_message_id}
+      })
+      .done(function(messages){
+        var insertHTML = '';
+        messages.forEach(function(message){
+          if (message.id > last_message_id){
+            insertHTML += buildMessageHTML(message);
+            $('.messages').append(insertHTML);
+            $('.messages').animate({scrollTop: $('.messages')[0].scrollHeight}, "first");
+          }
+        });
+      })
+      .fail(function(){
+        alert('自動更新に失敗しました');
+      })
+    }else{
+      clearInterval(intarval);
+    }
   };
 
-  $(function(){
-    if (window.location.href.match(/\/groups\/\d+\/messages/)){
-      setInterval(reloadMessages, 5000);
-    }
-  });
+  var intarval = setInterval(function(){
+    reloadMessages();
+  }, 5000 );
+});
 });
